@@ -40,7 +40,7 @@ pip install Flask-WTF
 To run the project through Command Prompt you have to CD into the folder and then run app.py.
 
 ```sh
-cd C:\Users\Alex\Downloads\csc455-master
+cd C:\Users\Alex\Downloads\Food-Database-Project-main
 ```
 
 ```sh
