@@ -1,0 +1,194 @@
+<!--
+AUTHORS
+
+Trish Beeksma
+Alex Mello
+Matthew Siebold
+-->
+
+<!DOCTYPE>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <!--title-->
+    <title>Food Database</title>
+    <!--html-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/frontDesign.css') }}">
+    <!--css-->
+    <link rel="stylesheet" href="venv/static/css/frontDesign.css">
+    <!--jquery cdn-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--jquery cookie cdn-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!--datatables cdn-->
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <!--datatables css cdn-->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+<div class="topBar">
+    <h2>Food Database</h2>
+
+
+    <span class="selection">
+        <a class="selectionButton inline" href="{{ url_for('home') }}"><h3 class="links">Home</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('combinations') }}"><h3 class="links">Combinations</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('comboItems') }}"><h3 class="links">Combination Items</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('restaurants') }}"><h3 class="links">Restaurants</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('edit') }}"><h3 class="links">Edit</h3></a>
+    </span>
+</div>
+
+
+<div id="main">
+    <div class="leftColumn" style = "width: 100px;">
+
+        <form method="POST" action="/combinations" id="filterForm">
+            <h4 class="inline">Calories</h4>
+            <hr style="width:50%">
+            <div>
+                <input type="checkbox" name="calories" value="calories1" id="calories1" checked>0 - 400<br>
+                <input type="checkbox" name="calories" value="calories2" id="calories2" checked>400 - 800<br>
+                <input type="checkbox" name="calories" value="calories3" id="calories3" checked>800 - 1200<br>
+                <input type="checkbox" name="calories" value="calories4" id="calories4" checked>1200 - 1600<br>
+                <input type="checkbox" name="calories" value="calories5" id="calories5" checked>Over 1600 <br>
+
+                <br>
+                <br>
+            </div>
+
+            <h4 class="inline">Carbs</h4>
+            <hr style="width:50%">
+            <div>
+                <input type="checkbox" name="carbs" value="carbs1" id="carbs1" checked>0 - 40<br>
+                <input type="checkbox" name="carbs" value="carbs2" id="carbs2" checked>40 - 80<br>
+                <input type="checkbox" name="carbs" value="carbs3" id="carbs3" checked>80 - 120<br>
+                <input type="checkbox" name="carbs" value="carbs4" id="carbs4" checked>120 - 160<br>
+                <input type="checkbox" name="carbs" value="carbs5" id="carbs5" checked>Over 160 <br>
+
+                <br>
+                <br>
+            </div>
+
+            <h4 class="inline">Protein</h4>
+            <hr style="width:50%">
+            <div>
+                <input type="checkbox" name="protein" value="protein1" id="protein1" checked>0 - 15<br>
+                <input type="checkbox" name="protein" value="protein2" id="protein2" checked>15 - 30<br>
+                <input type="checkbox" name="protein" value="protein3" id="protein3" checked>30 - 45<br>
+                <input type="checkbox" name="protein" value="protein4" id="protein4" checked>45 - 60<br>
+                <input type="checkbox" name="protein" value="protein5" id="protein5" checked>Over 60<br>
+
+                <br>
+                <br>
+            </div>
+
+            <h4 class="inline">Fat</h4>
+            <hr style="width:50%">
+            <div>
+                <input type="checkbox" name="fat" value="fat1" id="fat1" checked>0 - 20<br>
+                <input type="checkbox" name="fat" value="fat2" id="fat2" checked>20 - 40<br>
+                <input type="checkbox" name="fat" value="fat3" id="fat3" checked>40 - 60<br>
+                <input type="checkbox" name="fat" value="fat4" id="fat4" checked>60 - 80<br>
+                <input type="checkbox" name="fat" value="fat5" id="fat5" checked>Over 80 <br>
+
+                <br>
+                <br>
+            </div>
+        </form>
+    </div>
+
+    <div class="midSection">
+        <table class="display nowrap" id="queryData" style = "table-layout: fixed; width = 100%;">
+            <thead>
+            <tr>
+                <th style = "overflow: hidden">Restaurant</th>
+                <th style = "overflow: hidden">Combination Name</th>
+                <th style = "overflow: hidden">Item One</th>
+                <th style = "overflow: hidden">Item Two</th>
+                <th style = "overflow: hidden">Item Three</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in data %}
+            <tr>
+                {% for cell in row %}
+                <td  style = "overflow: hidden"> {{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+	$(document).ready(function() {
+    	$('#queryData').DataTable( {
+            "lengthMenu": [ 20, 50, 100 ],
+			"pageLength": 20,
+    	} );
+	} );
+
+</script>
+
+<script>
+    $("#filterForm").on("change", "input:checkbox", function(){
+        $("#filterForm").submit();
+    });
+
+</script>
+
+<script>
+    $(".links").click(function() {
+        var checkboxValues = $.cookie('checkboxValues');
+        if(checkboxValues){
+            $.removeCookie('checkboxValues', checkboxValues)
+        }
+    });
+
+</script>
+
+
+<!--Cannot use this script because it resets checkbox data on reload AND close tab-->
+<!--
+<script>
+    window.onbeforeunload = function () {
+    var checkboxValues = $.cookie('checkboxValues');
+        if(checkboxValues){
+            $.removeCookie('checkboxValues', checkboxValues)
+        }
+    };
+</script>
+-->
+
+
+<script>
+    $(":checkbox").on("change", function(){
+        var checkboxValues = {};
+        $(":checkbox").each(function(){
+            checkboxValues[this.id] = this.checked;
+        });
+        $.cookie('checkboxValues', checkboxValues)
+    });
+
+    function repopulateCheckboxes(){
+        var checkboxValues = $.cookie('checkboxValues');
+        if(checkboxValues){
+            Object.keys(checkboxValues).forEach(function(element) {
+                var checked = checkboxValues[element];
+                $("#" + element).prop('checked', checked);
+            });
+        }
+    }
+
+    $.cookie.json = true;
+    repopulateCheckboxes();
+
+</script>
+
+</body>
+</html>

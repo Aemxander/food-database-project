@@ -1,0 +1,91 @@
+<!--
+AUTHORS
+
+Trish Beeksma
+Alex Mello
+Matthew Siebold
+-->
+
+<!DOCTYPE>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+	<meta charset = "utf-8">
+	<title>Food Database</title>
+	<!--One link works with Flask, one just for use with html-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/frontDesign.css') }}">
+	<link rel="stylesheet" href="venv/static/css/frontDesign.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!--jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!--datatables-->
+	<script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+<div class = "topBar">
+	<h2>Food Database</h2>
+
+	<span class = "selection">
+        <a class="selectionButton inline" href="{{ url_for('home') }}"><h3 class="links">Home</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('combinations') }}"><h3 class="links">Combinations</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('comboItems') }}"><h3 class="links">Combination Items</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('restaurants') }}"><h3 class="links">Restaurants</h3></a>
+        <a class="selectionButton inline" href="{{ url_for('edit') }}"><h3 class="links">Edit</h3></a>
+	</span>
+</div>
+
+
+<div id = "main">
+
+
+	{% block _content %}
+
+	<div class="newItem">
+        <h2>Restaurant: {{ restaurantName }}</h2>
+        <h2>Combination Name: {{ comboName }}</h2>
+
+          <form  action="" method="post">
+
+        {{ comboItem.hidden_tag() }}
+        <h3>Select Items for Combination</h3>
+        <p>
+            {{ comboItem.itemOne.label }}<br>
+            {{ comboItem.itemOne }}
+        </p>
+        <p>
+            {{ comboItem.itemTwo.label }}<br>
+            {{ comboItem.itemTwo }}
+        </p>
+
+              <p>
+            {{ comboItem.itemThree.label }}<br>
+            {{ comboItem.itemThree }}
+        </p>
+
+
+
+
+        <p>{{ comboItem.submitComboItem() }}</p>
+
+
+    </form>
+		</div>
+{% endblock %}
+
+</div>
+
+<script>
+	$(document).ready(function() {
+    	$('#queryData').DataTable( {
+			"lengthChange": false,
+			"pageLength": 15,
+    	} );
+	} );
+
+
+</script>
+
+</body>
+</html>
